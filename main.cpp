@@ -1,6 +1,6 @@
 
-#include "encoder.h"
-#include "decoder.h"
+#include "include/encoder.h"
+#include "include/decoder.h"
 #include <iostream>
 
 int main(){
