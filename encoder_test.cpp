@@ -1,12 +1,40 @@
 #include <gtest/gtest.h>
+#include "include/encoder.h"
+#include "include/decoder.h"
+#include <iostream>
 
-// Demonstrate some basic assertions.
-TEST(EncoderTest, BasicAssertions) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
+TEST(CodecTest, BasicEncodingCaesar3) {
+  EncryptionType enc_type = Caesar3;
+  encoder enc(Caesar3);
+  std::string PlainText = "abc";
+  std::string exp_result = PlainText;
+  for(auto& c : exp_result) c+=3;
+
+  EXPECT_EQ(exp_result, enc.encode_string(PlainText));
+  EXPECT_NE(PlainText, enc.encode_string(PlainText));
 }
+
+TEST(CodecTest, EncodingDecoding) {
+  EncryptionType enc_type = Caesar3;
+  encoder enc(Caesar3);
+  decoder dec(Caesar3);
+
+  std::string PlainText = "this is some plain text";
+
+  EXPECT_EQ(PlainText,  dec.decode_string(enc.encode_string(PlainText)));
+}
+
+TEST(CodecTest, EncodingDecodingUtf8) {
+  EncryptionType enc_type = Caesar3;
+  encoder enc(Caesar3);
+  decoder dec(Caesar3);
+
+  std::string PlainText = "this is some plain text with %&%€!@";
+
+  EXPECT_EQ(PlainText,  dec.decode_string(enc.encode_string(PlainText)));
+}
+
+
 
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
