@@ -1,19 +1,15 @@
 
-#include "include/encoder.h"
-#include "include/decoder.h"
+#include "include/tree.h"
 #include <iostream>
 
 int main(){
-    EncryptionType EncType = Caesar3;
-    encoder encoder(EncType);
+    Tree BTree;
+    BTree.insert('a', 1);
+    BTree.insert('b', 2);
+    BTree.insert('c', 3);
+    BTree.insert('d', 2);
 
-    std::string String = "This will be encoded";
-    std::string EncodedString = encoder.encode_string(String);
-    std::cout << "Encoded String: " << EncodedString << std::endl;
-
-    decoder decoder(EncType);
-    std::string DecodedString = decoder.decode_string(EncodedString);
-    std::cout << "Decoded String: " << DecodedString << std::endl;
+    BTree.print_tree();
 
     return 0;
 }

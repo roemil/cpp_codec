@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+#include "include/types.h"
 #include "include/codec.h"
+#include "include/node.h"
 #include <iostream>
 
 /*
@@ -28,6 +30,7 @@ bool map_compare (Map const &lhs, Map const &rhs) {
 }
 
 TEST(CodecTest, OccurenceCount){
+    // reverse iterator 
   EncryptionType enc_type = Huffman;
   Codec codec(Huffman);
   std::string String {"AAAbbbccd"};
@@ -37,6 +40,12 @@ TEST(CodecTest, OccurenceCount){
                                        {'d', 1}};
   std::map<const char, int> Result = codec.count_occurences(String);
   EXPECT_EQ(true, map_compare(ExpResult, Result));
+}
+
+TEST(CodecTest, BasicBinaryTree){
+    Tree tree;
+    tree->Insert('a', 1);
+    EXPECT_EQ(1, tree->get_freq());
 }
 
 TEST(CodecTest, BasicEncodingCaesar3) {

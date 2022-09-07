@@ -7,13 +7,6 @@
 
 class Codec
 {
-    typedef struct {
-        char letter;
-        int freq;
-        struct Node* left;
-        struct Node* right;
-    } Node;
-
 private:
     EncryptionType enc_type_;
 
