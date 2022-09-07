@@ -1,4 +1,5 @@
 #include "include/codec.h"
+#include <map>
 
 Codec::Codec(EncryptionType EncType)
 {
@@ -9,11 +10,19 @@ Codec::~Codec()
 {
 }
 
-std::string Codec::encode_string(std::string& String){
+std::string encode_string_caesar3(const std::string& PlainText){
+    std::string EncodedString;
+    for(int i = 0; i < PlainText.size(); ++i){
+        EncodedString.push_back(PlainText[i]+3);
+    }
+    return EncodedString;
+}
+
+std::string Codec::encode_string(const std::string& PlainText){
     std::string EncodedString;
     switch (enc_type_){
         case Caesar3:
-            EncodedString = encode_string_caesar3(String);
+            EncodedString = encode_string_caesar3(PlainText);
             break;
         default:
             return "";
@@ -22,12 +31,30 @@ std::string Codec::encode_string(std::string& String){
     
 }
 
-std::string Codec::encode_string_caesar3(std::string& String){
-    std::string EncodedString;
-    for(int i = 0; i < String.size(); ++i){
-        EncodedString.push_back(String[i]+3);
+std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
+    std::map<const char, int> occurences;
+    for(const char& Char : PlainText){
+        if(occurences.find(Char) == occurences.end()){
+            occurences.insert({Char, 1});
+        }else{
+            auto OldValue = occurences.find(Char);
+            occurences.insert({Char, OldValue->second++});
+        }
     }
-    return EncodedString;
+    return occurences;
+}
+
+ByteVector Codec::compress_string(const std::string& PlainText){
+    ByteVector CompressedString {'3', '2', '1'};
+    return CompressedString;
+}
+
+std::string decode_string_caesar3(const std::string& EncodedString){
+    std::string DecodedString;
+    for(int i = 0; i < EncodedString.size(); i++){
+        DecodedString.push_back(EncodedString[i] - 3);
+    }
+    return DecodedString;
 }
 
 std::string Codec::decode_string(const std::string& EncodedString){
@@ -40,14 +67,6 @@ std::string Codec::decode_string(const std::string& EncodedString){
     default:
         DecodedString = "";
         break;
-    }
-    return DecodedString;
-}
-
-std::string Codec::decode_string_caesar3(const std::string& EncodedString){
-    std::string DecodedString;
-    for(int i = 0; i < EncodedString.size(); i++){
-        DecodedString.push_back(EncodedString[i] - 3);
     }
     return DecodedString;
 }

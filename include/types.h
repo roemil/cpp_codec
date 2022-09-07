@@ -1,3 +1,10 @@
-#pragma once
+#ifndef TYPES_H
+#define TYPES_H
 
-enum EncryptionType {Caesar3};
+#include <vector>
+
+enum EncryptionType {Caesar3, Huffman};
+typedef std::uint8_t Byte;
+typedef std::vector<Byte> ByteVector;
+
+#endif
