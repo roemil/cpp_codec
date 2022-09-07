@@ -44,7 +44,17 @@ std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
     return occurences;
 }
 
+Tree Codec::build_tree(const std::string& PlainText){
+    std::map<const char, int> occurences = count_occurences(PlainText);
+    Tree OccuranceTree;
+    for(auto iter = occurences.rbegin(); iter != occurences.rend(); ++iter){
+        OccuranceTree.insert(iter->first, iter->second);
+    }
+    return OccuranceTree;
+}
+
 ByteVector Codec::compress_string(const std::string& PlainText){
+    //std::map<const char, int> occurences = count_occurences(PlainText);
     ByteVector CompressedString {'3', '2', '1'};
     return CompressedString;
 }

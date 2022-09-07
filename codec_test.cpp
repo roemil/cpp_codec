@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "include/types.h"
 #include "include/codec.h"
-#include "include/node.h"
+#include "include/tree.h"
 #include <iostream>
 
 /*
@@ -42,10 +42,64 @@ TEST(CodecTest, OccurenceCount){
   EXPECT_EQ(true, map_compare(ExpResult, Result));
 }
 
+bool is_tree_equal(node* lNode, node* rNode){
+    if(lNode == nullptr && rNode == nullptr){
+        return true;
+    }else if(lNode->freq == rNode->freq && lNode->ch == rNode->ch){
+        if(is_tree_equal(lNode->left, rNode->left) &&
+           is_tree_equal(lNode->right, rNode->right)){
+            return true;
+           }else{
+            return false;
+           }
+    }else{
+        return false;
+    }
+}
+
+template <typename Tree>
+bool tree_compare (Tree &lhs, Tree &rhs) {
+    // No predicate needed because there is operator== for pairs already.
+    node* lRoot = lhs.get_root();
+    node * rRoot = rhs.get_root();
+    return lhs.size() == rhs.size() && is_tree_equal(lRoot, rRoot);
+}
+
 TEST(CodecTest, BasicBinaryTree){
-    Tree tree;
-    tree->Insert('a', 1);
-    EXPECT_EQ(1, tree->get_freq());
+    EncryptionType enc_type = Huffman;
+    Codec codec(Huffman);
+    Tree ExpTree;
+    ExpTree.insert('A', 3);
+    ExpTree.insert('b', 3);
+    ExpTree.insert('c', 2);
+    ExpTree.insert('d', 1);
+    std::string String {"AAAbbbccd"};
+
+    Tree OccuranceTree = codec.build_tree(String);
+
+    EXPECT_EQ(true, tree_compare(ExpTree, OccuranceTree));
+}
+
+TEST(CodecTest, CompareTrees){
+    EncryptionType enc_type = Huffman;
+    Codec codec(Huffman);
+    Tree TreeA;
+    TreeA.insert('A', 3);
+    TreeA.insert('b', 3);
+    TreeA.insert('c', 2);
+    TreeA.insert('d', 1);
+    TreeA.insert('e', 5);
+
+    Tree TreeB;
+    TreeB.insert('A', 3);
+    TreeB.insert('b', 3);
+    TreeB.insert('c', 2);
+    TreeB.insert('d', 1);
+    TreeB.insert('e', 5);
+
+    EXPECT_EQ(5, TreeA.size());
+    EXPECT_EQ(true, tree_compare(TreeA, TreeB));
+
 }
 
 TEST(CodecTest, BasicEncodingCaesar3) {

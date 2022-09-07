@@ -3,6 +3,7 @@
 
 Tree::Tree(){
     root_ = nullptr;
+    size_ = 0;
 }
 
 void Tree::delete_tree(node* Node){
@@ -22,6 +23,7 @@ node* Tree::GetNewNode(char ch, int freq){
     Node->ch = ch;
     Node->freq = freq;
     Node->left = Node->right = nullptr;
+    size_++;
     return Node;
 }
 
@@ -53,8 +55,12 @@ void Tree::insert(char ch, int freq){
     root_ = insert(root_, ch, freq);
 }
 
-int Tree::get_freq(){
-    return root_->freq;
+int Tree::get_freq(node* Node){
+    return Node->freq;
+}
+
+int Tree::get_ch(node* Node){
+    return Node->ch;
 }
 
 void Tree::print_tree(node* Node){
@@ -67,4 +73,12 @@ void Tree::print_tree(node* Node){
 
 void Tree::print_tree(){
     print_tree(root_);
+}
+
+int Tree::size(){
+    return size_;
+}
+
+node* Tree::get_root(){
+    return root_;
 }

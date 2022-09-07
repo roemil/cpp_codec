@@ -20,7 +20,7 @@ add_executable(
     codec_test
     #main.cpp
     codec.cpp
-    node.cpp
+    tree.cpp
     codec_test.cpp
 )
 target_link_libraries(

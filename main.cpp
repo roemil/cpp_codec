@@ -3,13 +3,14 @@
 #include <iostream>
 
 int main(){
-    Tree BTree;
-    BTree.insert('a', 1);
-    BTree.insert('b', 2);
-    BTree.insert('c', 3);
-    BTree.insert('d', 2);
+    Tree TreeA;
+    TreeA.insert('A', 3);
+    TreeA.insert('b', 3);
+    TreeA.insert('c', 2);
+    TreeA.insert('d', 4);
+    TreeA.insert('e', 5);
 
-    BTree.print_tree();
+    TreeA.print_tree();
 
     return 0;
 }
