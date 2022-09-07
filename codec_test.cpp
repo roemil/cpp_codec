@@ -31,11 +31,10 @@ TEST(CodecTest, OccurenceCount){
   EncryptionType enc_type = Huffman;
   Codec codec(Huffman);
   std::string String {"AAAbbbccd"};
-  std::map<const char, int> ExpResult;
-  ExpResult.insert({'A', 3});
-  ExpResult.insert({'b', 3});
-  ExpResult.insert({'c', 2});
-  ExpResult.insert({'d', 1});
+  std::map<const char, int> ExpResult {{'A', 3},
+                                       {'b', 3},
+                                       {'c', 2},
+                                       {'d', 1}};
   std::map<const char, int> Result = codec.count_occurences(String);
   EXPECT_EQ(true, map_compare(ExpResult, Result));
 }
