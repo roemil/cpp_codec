@@ -67,7 +67,7 @@ bool tree_compare (Tree &lhs, Tree &rhs) {
 
 TEST(CodecTest, BasicBinaryTree){
     EncryptionType enc_type = Huffman;
-    Codec codec(Huffman);
+    Codec codec(enc_type);
     Tree ExpTree;
     ExpTree.insert('A', 3);
     ExpTree.insert('b', 3);

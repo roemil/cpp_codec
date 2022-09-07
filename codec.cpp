@@ -47,7 +47,7 @@ std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
 Tree Codec::build_tree(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
     Tree OccuranceTree;
-    for(auto iter = occurences.rbegin(); iter != occurences.rend(); ++iter){
+    for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
         OccuranceTree.insert(iter->first, iter->second);
     }
     return OccuranceTree;
