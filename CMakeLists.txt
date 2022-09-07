@@ -19,9 +19,8 @@ include_directories(include)
 add_executable(
     codec_test
     #main.cpp
-    decoder.cpp
-    encoder.cpp
-    encoder_test.cpp
+    codec.cpp
+    codec_test.cpp
 )
 target_link_libraries(
   codec_test gtest_main
