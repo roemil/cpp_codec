@@ -69,15 +69,31 @@ TEST(CodecTest, BasicBinaryTree){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
     Tree ExpTree;
+    ExpTree.insert('d', 1);
+    ExpTree.insert('c', 2);
+    ExpTree.insert('b', 3);
+    ExpTree.insert('A', 3);
+    std::string String {"AAAbbbccd"};
+
+    Tree OccuranceTree = codec.build_min_heap(String);
+
+    EXPECT_EQ(true, tree_compare(ExpTree, OccuranceTree));
+}
+
+TEST(CodecTest, BasicCompression){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    Tree ExpTree;
     ExpTree.insert('A', 3);
     ExpTree.insert('b', 3);
     ExpTree.insert('c', 2);
     ExpTree.insert('d', 1);
-    std::string String {"AAAbbbccd"};
+    std::string String {"BCAADDDCCACACAC"};
 
-    Tree OccuranceTree = codec.build_tree(String);
+    ByteVector CompressionResult = codec.compress_string(String);
+    ByteVector ExpResult {0x04, 0x0, 0x03, 0x03, 0x05, 0x05, 0x05, 0x0, 0x0, 0x03, 0x0, 0x03, 0x0, 0x03, 0x0};
 
-    EXPECT_EQ(true, tree_compare(ExpTree, OccuranceTree));
+    EXPECT_EQ(ExpResult, CompressionResult);
 }
 
 TEST(CodecTest, CompareTrees){

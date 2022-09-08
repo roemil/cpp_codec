@@ -18,7 +18,7 @@ public:
     std::string encode_string(const std::string& PlainText);
     ByteVector compress_string(const std::string& PlainText);
     std::map<const char, int> count_occurences(const std::string& PlainText);
-    Tree build_tree(const std::string& PlainText);
+    Tree build_min_heap(const std::string& PlainText);
 
     std::string decode_string(const std::string& EncryptedString);
 };

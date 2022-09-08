@@ -14,7 +14,6 @@ private:
     node* root_;
     int size_;
     node* insert(node* Node, char ch, int freq);
-    node* GetNewNode(char ch, int freq);
     void print_tree(node* Node);
     void delete_tree(node* Node);
 public:
@@ -27,6 +26,7 @@ public:
     void delete_tree();
     int size();
     node* get_root();
+    node* GetNewNode(char ch, int freq);
 };
 
 #endif

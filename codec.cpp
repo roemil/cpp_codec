@@ -1,5 +1,6 @@
 #include "include/codec.h"
 #include <map>
+#include <iostream>
 
 Codec::Codec(EncryptionType EncType)
 {
@@ -44,19 +45,48 @@ std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
     return occurences;
 }
 
-Tree Codec::build_tree(const std::string& PlainText){
+Tree Codec::build_min_heap(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
     Tree OccuranceTree;
-    for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
+    for(auto iter = occurences.rbegin(); iter != occurences.rend(); ++iter){
         OccuranceTree.insert(iter->first, iter->second);
     }
     return OccuranceTree;
 }
 
+void print_huffman(node* root, std::string String){
+    if(!root) return;
+
+    if(root->ch != '$'){
+        std::cout << root->ch << ": " << String << std::endl;
+    }
+    print_huffman(root->left, String + "0");
+    print_huffman(root->right, String + "1");
+}
+
 ByteVector Codec::compress_string(const std::string& PlainText){
-    //std::map<const char, int> occurences = count_occurences(PlainText);
-    ByteVector CompressedString {'3', '2', '1'};
-    return CompressedString;
+    std::map<const char, int> occurences = count_occurences(PlainText);
+    Tree BTree;
+    std::vector<node*> NodeVector;
+    for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
+        node* NewNode = BTree.GetNewNode(iter->first, iter->second);
+        NodeVector.push_back(NewNode);
+    }
+
+    while(NodeVector.size() != 1){
+        node* Left = NodeVector.back();
+        NodeVector.pop_back();
+        node* Right = NodeVector.back();
+        NodeVector.pop_back();
+        node* NewNode = BTree.GetNewNode('$', Left->freq+Right->freq);
+        NewNode->left = Left;
+        NewNode->right = Right;
+        NodeVector.push_back(NewNode);
+    }
+
+    print_huffman(NodeVector.back(), "");
+
+    return ByteVector {0};
 }
 
 std::string decode_string_caesar3(const std::string& EncodedString){
