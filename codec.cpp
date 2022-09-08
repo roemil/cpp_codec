@@ -64,7 +64,7 @@ void print_huffman(node* root, std::string String){
     print_huffman(root->right, String + "1");
 }
 
-ByteVector Codec::compress_string(const std::string& PlainText){
+std::vector<node*> Codec::compress_string(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
     Tree BTree;
     std::vector<node*> NodeVector;
@@ -86,7 +86,7 @@ ByteVector Codec::compress_string(const std::string& PlainText){
 
     print_huffman(NodeVector.back(), "");
 
-    return ByteVector {0};
+    return NodeVector;
 }
 
 std::string decode_string_caesar3(const std::string& EncodedString){
