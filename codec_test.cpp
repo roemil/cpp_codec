@@ -3,6 +3,8 @@
 #include "include/codec.h"
 #include "include/tree.h"
 #include <iostream>
+#include <vector>
+#include <queue>
 
 /*
 * TEST LIST
@@ -26,10 +28,10 @@ TEST(CodecTest, OccurenceCount){
     // reverse iterator 
   EncryptionType enc_type = Huffman;
   Codec codec(Huffman);
-  std::string String {"AAAbbbccd"};
-  std::map<const char, int> ExpResult {{'A', 3},
-                                       {'b', 3},
+  std::string String {"AAbbbccd"};
+  std::map<const char, int> ExpResult {{'b', 3},
                                        {'c', 2},
+                                       {'A', 2},
                                        {'d', 1}};
   std::map<const char, int> Result = codec.count_occurences(String);
   EXPECT_EQ(true, map_compare(ExpResult, Result));
@@ -58,19 +60,28 @@ bool tree_compare (Tree &lhs, Tree &rhs) {
     return lhs.size() == rhs.size() && is_tree_equal(lRoot, rRoot);
 }
 
-TEST(CodecTest, BasicBinaryTree){
+TEST(CodecTest, CompareMinHeap){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
-    Tree ExpTree;
-    ExpTree.insert('d', 1);
-    ExpTree.insert('c', 2);
-    ExpTree.insert('b', 3);
-    ExpTree.insert('A', 3);
+    Tree tree;
+    std::priority_queue<node*, std::vector<node*>, compare> ExpMinHeap;
+    ExpMinHeap.push(tree.GetNewNode('d', 1));
+    ExpMinHeap.push(tree.GetNewNode('c', 2));
+    ExpMinHeap.push(tree.GetNewNode('b', 3));
+    ExpMinHeap.push(tree.GetNewNode('A', 3));
+
     std::string String {"AAAbbbccd"};
-
-    Tree OccuranceTree = codec.build_min_heap(String);
-
-    EXPECT_EQ(true, tree_compare(ExpTree, OccuranceTree));
+    std::priority_queue<node*, std::vector<node*>, compare> minheap = codec.build_min_heap(String);
+    EXPECT_EQ(ExpMinHeap.size(), minheap.size());
+    // TODO: Overload operator ==
+    for(int i = 0; i < minheap.size(); ++i){
+        auto ExpMinHeapTop = ExpMinHeap.top();
+        auto minheaptop = minheap.top();
+        EXPECT_EQ(ExpMinHeapTop->ch, minheaptop->ch);
+        EXPECT_EQ(ExpMinHeapTop->freq, minheaptop->freq);
+        ExpMinHeap.pop();
+        minheap.pop();
+    }
 }
 
 TEST(CodecTest, BasicCompression){
@@ -80,7 +91,7 @@ TEST(CodecTest, BasicCompression){
     // 100 0 11 11 101 101 0 0 11 0 11 0 11 0
 
     std::string CompressionResult = codec.compress_string(String);
-    std::string ExpResult = "1000111110110100110110110";
+    std::string ExpResult = "1000111110110110100110110110";
     EXPECT_EQ(ExpResult, CompressionResult);
 }
 

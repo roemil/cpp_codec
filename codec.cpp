@@ -2,6 +2,7 @@
 #include <map>
 #include <unordered_map>
 #include <iostream>
+#include <queue>
 
 Codec::Codec(EncryptionType EncType)
 {
@@ -32,7 +33,7 @@ std::string Codec::encode_string(const std::string& PlainText){
     return EncodedString;
     
 }
-
+// Here is the fault. Must sort by value, not key. Perhaps make use of std::priority_queue?
 std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
     std::map<const char, int> occurences;
     for(const char& Char : PlainText){
@@ -46,13 +47,15 @@ std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
     return occurences;
 }
 
-Tree Codec::build_min_heap(const std::string& PlainText){
+std::priority_queue<node*, std::vector<node*>, compare> Codec::build_min_heap(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
-    Tree OccuranceTree;
+    std::priority_queue<node*, std::vector<node*>, compare> minheap;
+    Tree tree;
     for(auto iter = occurences.rbegin(); iter != occurences.rend(); ++iter){
-        OccuranceTree.insert(iter->first, iter->second);
+        node* Node = tree.GetNewNode(iter->first, iter->second);
+        minheap.push(Node);
     }
-    return OccuranceTree;
+    return minheap;
 }
 
 void print_huffman(node* root, std::string String){
@@ -77,29 +80,25 @@ void Codec::build_huffman_codes(node* root, std::string String){
 
 std::string Codec::compress_string(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
+    std::priority_queue<node*, std::vector<node*>, compare> minheap = build_min_heap(PlainText);
     Tree BTree;
-    std::vector<node*> NodeVector;
-    for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
-        node* NewNode = BTree.GetNewNode(iter->first, iter->second);
-        NodeVector.push_back(NewNode);
-    }
-
-    while(NodeVector.size() != 1){
-        node* Left = NodeVector.back();
-        NodeVector.pop_back();
-        node* Right = NodeVector.back();
-        NodeVector.pop_back();
+    while(minheap.size() != 1){
+        node* Left = minheap.top();
+        minheap.pop();
+        node* Right = minheap.top();
+        minheap.pop();
+        std::cout << "Left: " << Left->ch << "," << Left->freq << " Right: " << Right->ch << "," << Right->freq << std::endl;
         node* NewNode = BTree.GetNewNode('$', Left->freq+Right->freq);
         NewNode->left = Left;
         NewNode->right = Right;
-        NodeVector.push_back(NewNode);
+        minheap.push(NewNode);
     }
-    print_huffman(NodeVector.back(), "");
-    build_huffman_codes(NodeVector.back(), "");
+    print_huffman(minheap.top(), "");
+    build_huffman_codes(minheap.top(), "");
     std::string result;
     for(const char& ch: PlainText){
         auto code = map_.find(ch);
-        std::cout << "Ch : " << ch << "Code: " << code->second << std::endl;
+        std::cout << "Ch: " << ch << ", Code: " << code->second << std::endl;
         result += code->second;
     }
 
