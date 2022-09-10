@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <iostream>
 #include <queue>
+#include <bitset>
 
 Codec::Codec(EncryptionType EncType)
 {
@@ -87,18 +88,17 @@ std::string Codec::compress_string(const std::string& PlainText){
         minheap.pop();
         node* Right = minheap.top();
         minheap.pop();
-        std::cout << "Left: " << Left->ch << "," << Left->freq << " Right: " << Right->ch << "," << Right->freq << std::endl;
         node* NewNode = BTree.GetNewNode('$', Left->freq+Right->freq);
         NewNode->left = Left;
         NewNode->right = Right;
         minheap.push(NewNode);
     }
-    print_huffman(minheap.top(), "");
+
     build_huffman_codes(minheap.top(), "");
+
     std::string result;
     for(const char& ch: PlainText){
         auto code = map_.find(ch);
-        std::cout << "Ch: " << ch << ", Code: " << code->second << std::endl;
         result += code->second;
     }
 
