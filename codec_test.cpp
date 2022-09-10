@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <bitset>
 
 /*
 * TEST LIST
@@ -15,6 +16,10 @@
 * Traverse binary tree to build string
 */
 
+TEST(CodecTest, BitSetTest){
+    std::bitset<5> BitSet {"1010"};
+    EXPECT_EQ(0xA, BitSet);
+}
 
 template <typename Map>
 bool map_compare (Map const &lhs, Map const &rhs) {
@@ -84,14 +89,48 @@ TEST(CodecTest, CompareMinHeap){
     }
 }
 
+TEST(CodecTest, CompareMinHeapWithSpace){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    Tree tree;
+    std::priority_queue<node*, std::vector<node*>, compare> ExpMinHeap;
+    ExpMinHeap.push(tree.GetNewNode('d', 1));
+    ExpMinHeap.push(tree.GetNewNode('c', 2));
+    ExpMinHeap.push(tree.GetNewNode('b', 3));
+    ExpMinHeap.push(tree.GetNewNode('A', 3));
+    ExpMinHeap.push(tree.GetNewNode(' ', 4));
+
+    std::string String {"AAA bbb cc d "};
+    std::priority_queue<node*, std::vector<node*>, compare> minheap = codec.build_min_heap(String);
+    EXPECT_EQ(ExpMinHeap.size(), minheap.size());
+    // TODO: Overload operator ==
+    for(int i = 0; i < minheap.size(); ++i){
+        auto ExpMinHeapTop = ExpMinHeap.top();
+        auto minheaptop = minheap.top();
+        EXPECT_EQ(ExpMinHeapTop->ch, minheaptop->ch);
+        EXPECT_EQ(ExpMinHeapTop->freq, minheaptop->freq);
+        ExpMinHeap.pop();
+        minheap.pop();
+    }
+}
+
 TEST(CodecTest, BasicCompression){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
     std::string String {"BCAADDDCCACACAC"};
-    // 100 0 11 11 101 101 0 0 11 0 11 0 11 0
 
     std::string CompressionResult = codec.compress_string(String);
-    std::string ExpResult = "1000111110110110100110110110";
+    std::string ExpResult = "1000111110110110100110110110"; // should be bitset
+    EXPECT_EQ(ExpResult, CompressionResult);
+}
+
+TEST(CodecTest, AdvancedCompressions){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    std::string String {"THIS IS A SENTENCE"};
+
+    std::string CompressionResult = codec.compress_string(String);
+    std::string ExpResult = "11010100011101111011101111010111110100100110100100110000";
     EXPECT_EQ(ExpResult, CompressionResult);
 }
 
