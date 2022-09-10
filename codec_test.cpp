@@ -76,17 +76,12 @@ TEST(CodecTest, BasicBinaryTree){
 TEST(CodecTest, BasicCompression){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
-    Tree ExpTree;
-    ExpTree.insert('A', 3);
-    ExpTree.insert('b', 3);
-    ExpTree.insert('c', 2);
-    ExpTree.insert('d', 1);
     std::string String {"BCAADDDCCACACAC"};
+    // 100 0 11 11 101 101 0 0 11 0 11 0 11 0
 
-    std::vector<node*> CompressionResult = codec.compress_string(String);
-    //ByteVector ExpResult {0x04, 0x0, 0x03, 0x03, 0x05, 0x05, 0x05, 0x0, 0x0, 0x03, 0x0, 0x03, 0x0, 0x03, 0x0};
-
-    EXPECT_EQ(true, true);
+    std::string CompressionResult = codec.compress_string(String);
+    std::string ExpResult = "1000111110110100110110110";
+    EXPECT_EQ(ExpResult, CompressionResult);
 }
 
 TEST(CodecTest, CompareTrees){

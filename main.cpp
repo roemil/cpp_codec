@@ -18,9 +18,10 @@ int main(){
     // ExpTree.print_tree();
 
     std::cout << std::endl;
-    std::string String {"AAAbbbccd"};
+    std::string String {"BCAADDDCCACACAC"};
     Codec codec(Huffman);
-    codec.compress_string(String);
+    std::string Result = codec.compress_string(String);
+    std::cout << Result << std::endl;
 
     return 0;
 }

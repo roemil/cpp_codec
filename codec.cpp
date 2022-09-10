@@ -1,5 +1,6 @@
 #include "include/codec.h"
 #include <map>
+#include <unordered_map>
 #include <iostream>
 
 Codec::Codec(EncryptionType EncType)
@@ -64,7 +65,17 @@ void print_huffman(node* root, std::string String){
     print_huffman(root->right, String + "1");
 }
 
-std::vector<node*> Codec::compress_string(const std::string& PlainText){
+void Codec::build_huffman_codes(node* root, std::string String){
+    if(!root) return;
+
+    if(root->ch != '$'){
+        map_.insert({root->ch, String});
+    }
+    build_huffman_codes(root->left, String + "0");
+    build_huffman_codes(root->right, String + "1");
+}
+
+std::string Codec::compress_string(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
     Tree BTree;
     std::vector<node*> NodeVector;
@@ -83,10 +94,16 @@ std::vector<node*> Codec::compress_string(const std::string& PlainText){
         NewNode->right = Right;
         NodeVector.push_back(NewNode);
     }
-
     print_huffman(NodeVector.back(), "");
+    build_huffman_codes(NodeVector.back(), "");
+    std::string result;
+    for(const char& ch: PlainText){
+        auto code = map_.find(ch);
+        std::cout << "Ch : " << ch << "Code: " << code->second << std::endl;
+        result += code->second;
+    }
 
-    return NodeVector;
+    return result;
 }
 
 std::string decode_string_caesar3(const std::string& EncodedString){
