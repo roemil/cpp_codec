@@ -138,13 +138,21 @@ TEST(CodecTest, BasicDeCompress){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
     std::string CompressedString = "11010100011101111011101111010111110100100110100100110000";
-    std::string ExpResult {"THIS IS A SENTENCE"};
-    std::string String {"THIS IS A SENTENCE"};
-    std::string CompressionResult = codec.compress_string(String);
+    std::string PlainText {"THIS IS A SENTENCE"};
+    std::string CompressionResult = codec.compress_string(PlainText);
 
     std::string DeCompressionResult = codec.decompress_string(CompressedString);
 
-    EXPECT_EQ(ExpResult, DeCompressionResult);
+    EXPECT_NE(PlainText, CompressionResult);
+    EXPECT_EQ(PlainText, DeCompressionResult);
+}
+
+TEST(CodecTest, EncodeDecode){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    std::string PlainText {"THIS IS A SENTENCE"};
+
+    EXPECT_EQ(PlainText, codec.decompress_string(codec.compress_string(PlainText)));
 }
 
 TEST(CodecTest, CompareTrees){
