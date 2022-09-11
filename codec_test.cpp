@@ -80,21 +80,10 @@ TEST(CodecTest, BasicDecodingHuffman){
     Codec codec(enc_type);
     std::string String {"1000111110110110100110110110"};
     std::string ExpResult {"BCAADDDCCACACAC"};
-    codec.create_tree(ExpResult);
+    codec.build_huffman_tree(ExpResult);
 
     std::string CompressionResult = codec.decode_string(String);
     EXPECT_EQ(ExpResult, CompressionResult);
-}
-
-TEST(CodecTest, AdvancedCompressions){
-    EncryptionType enc_type = Huffman;
-    Codec codec(enc_type);
-    std::string PlainText {"THIS IS A SENTENCE"};
-
-    std::string CompressionResult = codec.encode_string(PlainText);
-    std::string ExpResult = "11010100011101111011101111010111110100100110100100110000";
-    EXPECT_EQ(ExpResult, CompressionResult);
-    EXPECT_NE(PlainText, CompressionResult);
 }
 
 TEST(CodecTest, EncodeDecodeHuffman){

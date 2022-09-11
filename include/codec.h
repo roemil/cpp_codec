@@ -16,6 +16,7 @@ struct compare{
 };
 
 std::map<const char, int> count_occurences(const std::string& PlainText);
+void print_huffman(node* root, std::string String);
 
 class Codec
 {
@@ -35,7 +36,7 @@ public:
     ~Codec();
 
     std::string encode_string(const std::string& PlainText);
-    void create_tree(const std::string& String);
+    void build_huffman_tree(const std::string& PlainText);
 
     std::string decode_string(const std::string& EncryptedString);
 };
