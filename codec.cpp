@@ -66,7 +66,7 @@ void traverse_tree(node* root){
 
 }
 
-std::string Codec::encode_string_huffman(const std::string& PlainText){
+void Codec::create_tree(const std::string& PlainText){
     std::priority_queue<node*, std::vector<node*>, compare> minheap = build_min_heap(PlainText);
     Tree BTree;
     while(minheap.size() != 1){
@@ -83,14 +83,23 @@ std::string Codec::encode_string_huffman(const std::string& PlainText){
     build_huffman_codes(minheap.top(), "");
     min_heap_ = minheap;
     huffman_tree_ = minheap.top();
+}
 
+std::string Codec::MapCharToCode(const std::string& PlainText){
     std::string result;
     for(const char& ch: PlainText){
         auto code = map_.find(ch);
         result += code->second;
     }
 
-    return result; // TODO: Rename to result_
+    return result;
+}
+
+std::string Codec::encode_string_huffman(const std::string& PlainText){
+    create_tree(PlainText);
+    std::string result = MapCharToCode(PlainText);
+
+    return result;
 }
 
 std::string encode_string_caesar3(const std::string& PlainText){

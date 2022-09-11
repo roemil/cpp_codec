@@ -25,7 +25,9 @@ private:
     std::priority_queue<node*, std::vector<node*>, compare> min_heap_;
     node* huffman_tree_;
 
+    std::priority_queue<node*, std::vector<node*>, compare> build_min_heap(const std::string& PlainText);
     void build_huffman_codes(node* root, std::string String);
+    std::string MapCharToCode(const std::string& PlainText);
     std::string encode_string_huffman(const std::string& PlainText);
     std::string decode_string_huffman(const std::string& CompressedString);
 public:
@@ -33,7 +35,7 @@ public:
     ~Codec();
 
     std::string encode_string(const std::string& PlainText);
-    std::priority_queue<node*, std::vector<node*>, compare> build_min_heap(const std::string& PlainText);
+    void create_tree(const std::string& String);
 
     std::string decode_string(const std::string& EncryptedString);
 };

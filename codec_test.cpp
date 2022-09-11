@@ -65,62 +65,24 @@ bool tree_compare (Tree &lhs, Tree &rhs) {
     return lhs.size() == rhs.size() && is_tree_equal(lRoot, rRoot);
 }
 
-TEST(CodecTest, CompareMinHeap){
-    EncryptionType enc_type = Huffman;
-    Codec codec(enc_type);
-    Tree tree;
-    std::priority_queue<node*, std::vector<node*>, compare> ExpMinHeap;
-    ExpMinHeap.push(tree.GetNewNode('d', 1));
-    ExpMinHeap.push(tree.GetNewNode('c', 2));
-    ExpMinHeap.push(tree.GetNewNode('b', 3));
-    ExpMinHeap.push(tree.GetNewNode('A', 3));
-
-    std::string String {"AAAbbbccd"};
-    std::priority_queue<node*, std::vector<node*>, compare> minheap = codec.build_min_heap(String);
-    EXPECT_EQ(ExpMinHeap.size(), minheap.size());
-    // TODO: Overload operator ==
-    for(int i = 0; i < minheap.size(); ++i){
-        auto ExpMinHeapTop = ExpMinHeap.top();
-        auto minheaptop = minheap.top();
-        EXPECT_EQ(ExpMinHeapTop->ch, minheaptop->ch);
-        EXPECT_EQ(ExpMinHeapTop->freq, minheaptop->freq);
-        ExpMinHeap.pop();
-        minheap.pop();
-    }
-}
-
-TEST(CodecTest, CompareMinHeapWithSpace){
-    EncryptionType enc_type = Huffman;
-    Codec codec(enc_type);
-    Tree tree;
-    std::priority_queue<node*, std::vector<node*>, compare> ExpMinHeap;
-    ExpMinHeap.push(tree.GetNewNode('d', 1));
-    ExpMinHeap.push(tree.GetNewNode('c', 2));
-    ExpMinHeap.push(tree.GetNewNode('b', 3));
-    ExpMinHeap.push(tree.GetNewNode('A', 3));
-    ExpMinHeap.push(tree.GetNewNode(' ', 4));
-
-    std::string String {"AAA bbb cc d "};
-    std::priority_queue<node*, std::vector<node*>, compare> minheap = codec.build_min_heap(String);
-    EXPECT_EQ(ExpMinHeap.size(), minheap.size());
-    // TODO: Overload operator ==
-    for(int i = 0; i < minheap.size(); ++i){
-        auto ExpMinHeapTop = ExpMinHeap.top();
-        auto minheaptop = minheap.top();
-        EXPECT_EQ(ExpMinHeapTop->ch, minheaptop->ch);
-        EXPECT_EQ(ExpMinHeapTop->freq, minheaptop->freq);
-        ExpMinHeap.pop();
-        minheap.pop();
-    }
-}
-
-TEST(CodecTest, BasicCompression){
+TEST(CodecTest, BasicEncodingHuffman){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
     std::string String {"BCAADDDCCACACAC"};
 
     std::string CompressionResult = codec.encode_string(String);
-    std::string ExpResult = "1000111110110110100110110110"; // should be bitset
+    std::string ExpResult = "1000111110110110100110110110";
+    EXPECT_EQ(ExpResult, CompressionResult);
+}
+
+TEST(CodecTest, BasicDecodingHuffman){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    std::string String {"1000111110110110100110110110"};
+    std::string ExpResult {"BCAADDDCCACACAC"};
+    codec.create_tree(ExpResult);
+
+    std::string CompressionResult = codec.decode_string(String);
     EXPECT_EQ(ExpResult, CompressionResult);
 }
 
