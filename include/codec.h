@@ -15,6 +15,8 @@ struct compare{
     }
 };
 
+std::map<const char, int> count_occurences(const std::string& PlainText);
+
 class Codec
 {
 private:
@@ -31,7 +33,6 @@ public:
     ~Codec();
 
     std::string encode_string(const std::string& PlainText);
-    std::map<const char, int> count_occurences(const std::string& PlainText);
     std::priority_queue<node*, std::vector<node*>, compare> build_min_heap(const std::string& PlainText);
 
     std::string decode_string(const std::string& EncryptedString);

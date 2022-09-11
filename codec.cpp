@@ -5,16 +5,7 @@
 #include <queue>
 #include <bitset>
 
-Codec::Codec(EncryptionType EncType)
-{
-    enc_type_ = EncType;
-}
-
-Codec::~Codec()
-{
-}
-
-std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
+std::map<const char, int> count_occurences(const std::string& PlainText){
     std::map<const char, int> occurences;
     for(const char& Char : PlainText){
         if(occurences.find(Char) == occurences.end()){
@@ -25,6 +16,15 @@ std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
         }
     }
     return occurences;
+}
+
+Codec::Codec(EncryptionType EncType)
+{
+    enc_type_ = EncType;
+}
+
+Codec::~Codec()
+{
 }
 
 std::priority_queue<node*, std::vector<node*>, compare> Codec::build_min_heap(const std::string& PlainText){

@@ -38,7 +38,7 @@ TEST(CodecTest, OccurenceCount){
                                        {'c', 2},
                                        {'A', 2},
                                        {'d', 1}};
-  std::map<const char, int> Result = codec.count_occurences(String);
+  std::map<const char, int> Result = count_occurences(String);
   EXPECT_EQ(true, map_compare(ExpResult, Result));
 }
 
