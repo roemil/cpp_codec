@@ -94,6 +94,14 @@ TEST(CodecTest, EncodeDecodeHuffman){
     EXPECT_EQ(PlainText, codec.decode_string(codec.encode_string(PlainText)));
 }
 
+TEST(CodecTest, EncodeDecodeHuffmanAdvanced){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    std::string PlainText {"THIS IS A SENTENCE with Spec!al chars"};
+
+    EXPECT_EQ(PlainText, codec.decode_string(codec.encode_string(PlainText)));
+}
+
 TEST(CodecTest, CompareTrees){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
