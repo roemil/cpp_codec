@@ -32,7 +32,7 @@ bool map_compare (Map const &lhs, Map const &rhs) {
 TEST(CodecTest, OccurenceCount){
     // reverse iterator 
   EncryptionType enc_type = Huffman;
-  Codec codec(Huffman);
+  Codec codec(enc_type);
   std::string String {"AAbbbccd"};
   std::map<const char, int> ExpResult {{'b', 3},
                                        {'c', 2},
@@ -119,7 +119,7 @@ TEST(CodecTest, BasicCompression){
     Codec codec(enc_type);
     std::string String {"BCAADDDCCACACAC"};
 
-    std::string CompressionResult = codec.compress_string(String);
+    std::string CompressionResult = codec.encode_string(String);
     std::string ExpResult = "1000111110110110100110110110"; // should be bitset
     EXPECT_EQ(ExpResult, CompressionResult);
 }
@@ -129,23 +129,23 @@ TEST(CodecTest, AdvancedCompressions){
     Codec codec(enc_type);
     std::string PlainText {"THIS IS A SENTENCE"};
 
-    std::string CompressionResult = codec.compress_string(PlainText);
+    std::string CompressionResult = codec.encode_string(PlainText);
     std::string ExpResult = "11010100011101111011101111010111110100100110100100110000";
     EXPECT_EQ(ExpResult, CompressionResult);
     EXPECT_NE(PlainText, CompressionResult);
 }
 
-TEST(CodecTest, EncodeDecode){
+TEST(CodecTest, EncodeDecodeHuffman){
     EncryptionType enc_type = Huffman;
     Codec codec(enc_type);
     std::string PlainText {"THIS IS A SENTENCE"};
 
-    EXPECT_EQ(PlainText, codec.decompress_string(codec.compress_string(PlainText)));
+    EXPECT_EQ(PlainText, codec.decode_string(codec.encode_string(PlainText)));
 }
 
 TEST(CodecTest, CompareTrees){
     EncryptionType enc_type = Huffman;
-    Codec codec(Huffman);
+    Codec codec(enc_type);
     Tree TreeA;
     TreeA.insert('A', 3);
     TreeA.insert('b', 3);
@@ -176,7 +176,7 @@ TEST(CodecTest, BasicEncodingCaesar3) {
   EXPECT_NE(PlainText, codec.encode_string(PlainText));
 }
 
-TEST(CodecTest, EncodingDecoding) {
+TEST(CodecTest, EncodingDecodingCaesar) {
   EncryptionType enc_type = Caesar3;
   Codec codec(Caesar3);
 
@@ -185,7 +185,7 @@ TEST(CodecTest, EncodingDecoding) {
   EXPECT_EQ(PlainText,  codec.decode_string(codec.encode_string(PlainText)));
 }
 
-TEST(CodecTest, EncodingDecodingUtf8) {
+TEST(CodecTest, EncodingDecodingUtf8Caesar) {
   EncryptionType enc_type = Caesar3;
   Codec codec(Caesar3);
 

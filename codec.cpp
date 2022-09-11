@@ -14,27 +14,6 @@ Codec::~Codec()
 {
 }
 
-std::string encode_string_caesar3(const std::string& PlainText){
-    std::string EncodedString;
-    for(int i = 0; i < PlainText.size(); ++i){
-        EncodedString.push_back(PlainText[i]+3);
-    }
-    return EncodedString;
-}
-
-std::string Codec::encode_string(const std::string& PlainText){
-    std::string EncodedString;
-    switch (enc_type_){
-        case Caesar3:
-            EncodedString = encode_string_caesar3(PlainText);
-            break;
-        default:
-            return "";
-    }
-    return EncodedString;
-    
-}
-// Here is the fault. Must sort by value, not key. Perhaps make use of std::priority_queue?
 std::map<const char, int> Codec::count_occurences(const std::string& PlainText){
     std::map<const char, int> occurences;
     for(const char& Char : PlainText){
@@ -87,8 +66,7 @@ void traverse_tree(node* root){
 
 }
 
-std::string Codec::compress_string(const std::string& PlainText){
-    std::map<const char, int> occurences = count_occurences(PlainText);
+std::string Codec::encode_string_huffman(const std::string& PlainText){
     std::priority_queue<node*, std::vector<node*>, compare> minheap = build_min_heap(PlainText);
     Tree BTree;
     while(minheap.size() != 1){
@@ -115,7 +93,30 @@ std::string Codec::compress_string(const std::string& PlainText){
     return result; // TODO: Rename to result_
 }
 
-std::string Codec::decompress_string(const std::string& CompressedString){
+std::string encode_string_caesar3(const std::string& PlainText){
+    std::string EncodedString;
+    for(int i = 0; i < PlainText.size(); ++i){
+        EncodedString.push_back(PlainText[i]+3);
+    }
+    return EncodedString;
+}
+
+std::string Codec::encode_string(const std::string& PlainText){
+    std::string EncodedString;
+    switch (enc_type_){
+        case Caesar3:
+            EncodedString = encode_string_caesar3(PlainText);
+            break;
+        case Huffman:
+            EncodedString = encode_string_huffman(PlainText);
+            break;
+        default:
+            return "";
+    }
+    return EncodedString;
+}
+
+std::string Codec::decode_string_huffman(const std::string& CompressedString){
     node* Head = huffman_tree_;
     std::string result;
     for(const char& ch : CompressedString){
@@ -147,6 +148,9 @@ std::string Codec::decode_string(const std::string& EncodedString){
     {
     case Caesar3:
         DecodedString = decode_string_caesar3(EncodedString);
+        break;
+    case Huffman:
+        DecodedString = decode_string_huffman(EncodedString);
         break;
     default:
         DecodedString = "";
