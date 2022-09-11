@@ -28,6 +28,8 @@ public:
     int size();
     node* get_root();
     node* GetNewNode(char ch, int freq);
+    void traverse_tree();
+    void traverse_tree(node* root);
 };
 
 #endif

@@ -69,14 +69,6 @@ void Codec::build_huffman_codes(node* root, std::string String){
     build_huffman_codes(root->right, String + "1");
 }
 
-void traverse_tree(node* root){
-    if(root == nullptr) return;
-    std::cout << "ch: " << root->ch << std::endl;
-    traverse_tree(root->left);
-    traverse_tree(root->right);
-
-}
-
 void Codec::create_tree(const std::string& PlainText){
     min_heap_ = build_min_heap(PlainText);
     huffman_tree_ = min_heap_.top();
@@ -100,29 +92,6 @@ std::string Codec::encode_string_huffman(const std::string& PlainText){
     return result;
 }
 
-std::string encode_string_caesar3(const std::string& PlainText){
-    std::string EncodedString;
-    for(int i = 0; i < PlainText.size(); ++i){
-        EncodedString.push_back(PlainText[i]+3);
-    }
-    return EncodedString;
-}
-
-std::string Codec::encode_string(const std::string& PlainText){
-    std::string EncodedString;
-    switch (enc_type_){
-        case Caesar3:
-            EncodedString = encode_string_caesar3(PlainText);
-            break;
-        case Huffman:
-            EncodedString = encode_string_huffman(PlainText);
-            break;
-        default:
-            return "";
-    }
-    return EncodedString;
-}
-
 std::string Codec::decode_string_huffman(const std::string& CompressedString){
     node* Head = huffman_tree_;
     std::string result;
@@ -141,12 +110,35 @@ std::string Codec::decode_string_huffman(const std::string& CompressedString){
 
 }
 
+std::string encode_string_caesar3(const std::string& PlainText){
+    std::string EncodedString;
+    for(int i = 0; i < PlainText.size(); ++i){
+        EncodedString.push_back(PlainText[i]+3);
+    }
+    return EncodedString;
+}
+
 std::string decode_string_caesar3(const std::string& EncodedString){
     std::string DecodedString;
     for(int i = 0; i < EncodedString.size(); i++){
         DecodedString.push_back(EncodedString[i] - 3);
     }
     return DecodedString;
+}
+
+std::string Codec::encode_string(const std::string& PlainText){
+    std::string EncodedString;
+    switch (enc_type_){
+        case Caesar3:
+            EncodedString = encode_string_caesar3(PlainText);
+            break;
+        case Huffman:
+            EncodedString = encode_string_huffman(PlainText);
+            break;
+        default:
+            return "";
+    }
+    return EncodedString;
 }
 
 std::string Codec::decode_string(const std::string& EncodedString){

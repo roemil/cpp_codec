@@ -87,3 +87,15 @@ int Tree::size(){
 node* Tree::get_root(){
     return root_;
 }
+
+void Tree::traverse_tree(){
+    traverse_tree(get_root());
+}
+
+void Tree::traverse_tree(node* root){
+    if(root == nullptr) return;
+    std::cout << "ch: " << root->ch << std::endl;
+    traverse_tree(root->left);
+    traverse_tree(root->right);
+
+}
