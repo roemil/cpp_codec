@@ -75,7 +75,7 @@ void Codec::build_huffman_codes(node* root, std::string String){
     build_huffman_codes(root->right, String + "1");
 }
 
-std::string Codec::MapCharToCode(const std::string& PlainText){
+std::string Codec::map_char_to_code(const std::string& PlainText){
     std::string result;
     for(const char& ch: PlainText){
         auto code = map_.find(ch);
@@ -88,7 +88,7 @@ std::string Codec::MapCharToCode(const std::string& PlainText){
 std::string Codec::encode_string_huffman(const std::string& PlainText){
     build_huffman_tree(PlainText);
     build_huffman_codes(huffman_tree_, "");
-    std::string result = MapCharToCode(PlainText);
+    std::string result = map_char_to_code(PlainText);
 
     return result;
 }

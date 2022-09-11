@@ -28,7 +28,7 @@ private:
 
     std::priority_queue<node*, std::vector<node*>, compare> build_min_heap(const std::string& PlainText);
     void build_huffman_codes(node* root, std::string String);
-    std::string MapCharToCode(const std::string& PlainText);
+    std::string map_char_to_code(const std::string& PlainText);
     std::string encode_string_huffman(const std::string& PlainText);
     std::string decode_string_huffman(const std::string& CompressedString);
 public:
