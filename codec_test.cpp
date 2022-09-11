@@ -7,15 +7,6 @@
 #include <queue>
 #include <bitset>
 
-/*
-* TEST LIST
-* Compress simple string
-* Decompress simple string
-* Build a binary tree
-* Fill binary tree
-* Traverse binary tree to build string
-*/
-
 TEST(CodecTest, BitSetTest){
     std::bitset<5> BitSet {"1010"};
     EXPECT_EQ(0xA, BitSet);
@@ -30,9 +21,6 @@ bool map_compare (Map const &lhs, Map const &rhs) {
 }
 
 TEST(CodecTest, OccurenceCount){
-    // reverse iterator 
-  EncryptionType enc_type = Huffman;
-  Codec codec(enc_type);
   std::string String {"AAbbbccd"};
   std::map<const char, int> ExpResult {{'b', 3},
                                        {'c', 2},
@@ -63,6 +51,28 @@ bool tree_compare (Tree &lhs, Tree &rhs) {
     node* lRoot = lhs.get_root();
     node * rRoot = rhs.get_root();
     return lhs.size() == rhs.size() && is_tree_equal(lRoot, rRoot);
+}
+
+// TODO: Move to a tree suit.
+TEST(CodecTest, CompareTrees){
+    EncryptionType enc_type = Huffman;
+    Codec codec(enc_type);
+    Tree TreeA;
+    TreeA.insert('A', 3);
+    TreeA.insert('b', 3);
+    TreeA.insert('c', 2);
+    TreeA.insert('d', 1);
+    TreeA.insert('e', 5);
+
+    Tree TreeB;
+    TreeB.insert('A', 3);
+    TreeB.insert('b', 3);
+    TreeB.insert('c', 2);
+    TreeB.insert('d', 1);
+    TreeB.insert('e', 5);
+
+    EXPECT_EQ(5, TreeA.size());
+    EXPECT_EQ(true, tree_compare(TreeA, TreeB));
 }
 
 TEST(CodecTest, BasicEncodingHuffman){
@@ -100,28 +110,6 @@ TEST(CodecTest, EncodeDecodeHuffmanAdvanced){
     std::string PlainText {"THIS IS A SENTENCE with Spec!al chars"};
 
     EXPECT_EQ(PlainText, codec.decode_string(codec.encode_string(PlainText)));
-}
-
-TEST(CodecTest, CompareTrees){
-    EncryptionType enc_type = Huffman;
-    Codec codec(enc_type);
-    Tree TreeA;
-    TreeA.insert('A', 3);
-    TreeA.insert('b', 3);
-    TreeA.insert('c', 2);
-    TreeA.insert('d', 1);
-    TreeA.insert('e', 5);
-
-    Tree TreeB;
-    TreeB.insert('A', 3);
-    TreeB.insert('b', 3);
-    TreeB.insert('c', 2);
-    TreeB.insert('d', 1);
-    TreeB.insert('e', 5);
-
-    EXPECT_EQ(5, TreeA.size());
-    EXPECT_EQ(true, tree_compare(TreeA, TreeB));
-
 }
 
 TEST(CodecTest, BasicEncodingCaesar3) {
