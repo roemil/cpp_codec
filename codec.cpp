@@ -79,6 +79,14 @@ void Codec::build_huffman_codes(node* root, std::string String){
     build_huffman_codes(root->right, String + "1");
 }
 
+void traverse_tree(node* root){
+    if(root == nullptr) return;
+    std::cout << "ch: " << root->ch << std::endl;
+    traverse_tree(root->left);
+    traverse_tree(root->right);
+
+}
+
 std::string Codec::compress_string(const std::string& PlainText){
     std::map<const char, int> occurences = count_occurences(PlainText);
     std::priority_queue<node*, std::vector<node*>, compare> minheap = build_min_heap(PlainText);
@@ -88,13 +96,15 @@ std::string Codec::compress_string(const std::string& PlainText){
         minheap.pop();
         node* Right = minheap.top();
         minheap.pop();
-        node* NewNode = BTree.GetNewNode('$', Left->freq+Right->freq);
+        node* NewNode = BTree.GetNewNode('$', Left->freq+Right->freq); // TODO: Create a node file separate from tree
         NewNode->left = Left;
         NewNode->right = Right;
         minheap.push(NewNode);
     }
 
     build_huffman_codes(minheap.top(), "");
+    min_heap_ = minheap;
+    huffman_tree_ = minheap.top();
 
     std::string result;
     for(const char& ch: PlainText){
@@ -102,7 +112,25 @@ std::string Codec::compress_string(const std::string& PlainText){
         result += code->second;
     }
 
+    return result; // TODO: Rename to result_
+}
+
+std::string Codec::decompress_string(const std::string& CompressedString){
+    node* Head = huffman_tree_;
+    std::string result;
+    for(const char& ch : CompressedString){
+        if(ch == '0'){
+            Head = Head->left;
+        }else{
+            Head = Head->right;
+        }
+        if(Head->left == nullptr && Head->right == nullptr){
+            result += Head->ch;
+            Head = huffman_tree_;
+        }
+    }
     return result;
+
 }
 
 std::string decode_string_caesar3(const std::string& EncodedString){

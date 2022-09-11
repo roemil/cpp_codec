@@ -6,6 +6,11 @@ Tree::Tree(){
     size_ = 0;
 }
 
+Tree::Tree(node* root){
+    root_ = root;
+    size_ = -1; // TODO: Traverse and set size
+}
+
 void Tree::delete_tree(node* Node){
     if(Node != nullptr){
         delete_tree(Node->left);

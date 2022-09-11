@@ -18,6 +18,7 @@ private:
     void delete_tree(node* Node);
 public:
     Tree();
+    Tree(node* root);
     ~Tree();
     void insert(char ch, int freq);
     int get_freq(node* Node);

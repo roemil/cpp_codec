@@ -22,6 +22,8 @@ private:
     std::string result;
     std::unordered_map<char, std::string> map_;
     void build_huffman_codes(node* root, std::string String);
+    std::priority_queue<node*, std::vector<node*>, compare> min_heap_;
+    node* huffman_tree_;
 
 public:
     Codec(EncryptionType enc_type_);
@@ -29,6 +31,7 @@ public:
 
     std::string encode_string(const std::string& PlainText);
     std::string compress_string(const std::string& PlainText);
+    std::string decompress_string(const std::string& CompressedString);
     std::map<const char, int> count_occurences(const std::string& PlainText);
     std::priority_queue<node*, std::vector<node*>, compare> build_min_heap(const std::string& PlainText);
 
