@@ -19,7 +19,6 @@ class Codec
 {
 private:
     EncryptionType enc_type_;
-    std::string result;
     std::unordered_map<char, std::string> map_;
     std::priority_queue<node*, std::vector<node*>, compare> min_heap_;
     node* huffman_tree_;
