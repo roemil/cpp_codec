@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "include/types.h"
-#include "include/codec.h"
+#include "types.h"
+#include "codec.h"
 #include <iostream>
 #include <vector>
 #include <queue>

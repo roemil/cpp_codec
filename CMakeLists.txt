@@ -19,9 +19,9 @@ include_directories(include)
 add_executable(
     codec_SUITE
     #main.cpp
-    codec.cpp
-    node.cpp
-    codec_SUITE.cpp
+    src/codec.cpp
+    src/node.cpp
+    test/codec_SUITE.cpp
 )
 target_link_libraries(
     codec_SUITE gtest_main
