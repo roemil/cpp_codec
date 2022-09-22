@@ -17,15 +17,15 @@ FetchContent_MakeAvailable(googletest)
 include_directories(include)
 
 add_executable(
-    codec_test
+    codec_SUITE
     #main.cpp
     codec.cpp
     node.cpp
     codec_SUITE.cpp
 )
 target_link_libraries(
-  codec_test gtest_main
+    codec_SUITE gtest_main
 )
  
 include(GoogleTest)
-gtest_discover_tests(codec_test)
+gtest_discover_tests(codec_SUITE)
