@@ -20,8 +20,8 @@ add_executable(
     codec_test
     #main.cpp
     codec.cpp
-    tree.cpp
-    codec_test.cpp
+    node.cpp
+    codec_SUITE.cpp
 )
 target_link_libraries(
   codec_test gtest_main

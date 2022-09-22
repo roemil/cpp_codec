@@ -5,17 +5,8 @@
 #include <queue>
 #include <bitset>
 
-void print_huffman(node* root, std::string String){
-    if(!root) return;
 
-    if(root->ch != '$'){
-        std::cout << root->ch << ": " << String << std::endl;
-    }
-    print_huffman(root->left, String + "0");
-    print_huffman(root->right, String + "1");
-}
-
-std::map<const char, int> count_occurences(const std::string& PlainText){
+std::map<const char, int> Utility::count_occurences(const std::string& PlainText){
     std::map<const char, int> occurences;
     for(const char& Char : PlainText){
         if(occurences.find(Char) == occurences.end()){
@@ -28,6 +19,17 @@ std::map<const char, int> count_occurences(const std::string& PlainText){
     return occurences;
 }
 
+void Utility::print_huffman(Node::node* root, std::string String){
+    if(!root) return;
+
+    if(root->ch != '$'){
+        std::cout << root->ch << ": " << String << std::endl;
+    }
+    print_huffman(root->left, String + "0");
+    print_huffman(root->right, String + "1");
+}
+
+
 Codec::Codec(EncryptionType EncType)
 {
     enc_type_ = EncType;
@@ -37,12 +39,11 @@ Codec::~Codec()
 {
 }
 
-std::priority_queue<node*, std::vector<node*>, compare> Codec::build_min_heap(const std::string& PlainText){
-    std::map<const char, int> occurences = count_occurences(PlainText);
-    std::priority_queue<node*, std::vector<node*>, compare> minheap;
-    Tree tree;
+std::priority_queue<Node::node*, std::vector<Node::node*>, compare> Codec::build_min_heap(const std::string& PlainText){
+    std::map<const char, int> occurences = Utility::count_occurences(PlainText);
+    std::priority_queue<Node::node*, std::vector<Node::node*>, compare> minheap;
     for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
-        node* Node = tree.GetNewNode(iter->first, iter->second);
+        Node::node* Node = Node::CreateNewNode(iter->first, iter->second);
         minheap.push(Node);
     }
 
@@ -50,14 +51,13 @@ std::priority_queue<node*, std::vector<node*>, compare> Codec::build_min_heap(co
 }
 
 void Codec::build_huffman_tree(const std::string& PlainText){
-    std::priority_queue<node*, std::vector<node*>, compare> minheap = build_min_heap(PlainText);
-    Tree tree;
+    std::priority_queue<Node::node*, std::vector<Node::node*>, compare> minheap = build_min_heap(PlainText);
     while(minheap.size() != 1){
-        node* Left = minheap.top();
+        Node::node* Left = minheap.top();
         minheap.pop();
-        node* Right = minheap.top();
+        Node::node* Right = minheap.top();
         minheap.pop();
-        node* NewNode = tree.GetNewNode('$', Left->freq+Right->freq); // TODO: Create a node file separate from tree
+        Node::node* NewNode = Node::CreateNewNode('$', Left->freq+Right->freq);
         NewNode->left = Left;
         NewNode->right = Right;
         minheap.push(NewNode);
@@ -65,7 +65,7 @@ void Codec::build_huffman_tree(const std::string& PlainText){
     huffman_tree_ = minheap.top();
 }
 
-void Codec::build_huffman_codes(node* root, std::string String){
+void Codec::build_huffman_codes(Node::node* root, std::string String){
     if(!root) return;
 
     if(root->ch != '$'){
@@ -88,13 +88,13 @@ std::string Codec::map_char_to_code(const std::string& PlainText){
 std::string Codec::encode_string_huffman(const std::string& PlainText){
     build_huffman_tree(PlainText);
     build_huffman_codes(huffman_tree_, "");
-    std::string result = map_char_to_code(PlainText);
 
+    std::string result = map_char_to_code(PlainText);
     return result;
 }
 
 std::string Codec::decode_string_huffman(const std::string& CompressedString){
-    node* Head = huffman_tree_;
+    Node::node* Head = huffman_tree_;
     std::string result;
     for(const char& ch : CompressedString){
         if(ch == '0'){
