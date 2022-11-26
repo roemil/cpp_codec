@@ -1,5 +1,4 @@
 #include "codec.h"
-#include <memory>
 
 std::string Codec::encode_string(const std::string& plainText){
     std::string encodedString;
