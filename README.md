@@ -5,5 +5,6 @@ Currently only two algorithms are supported:
 2. Huffmann
 
 Future work:
-Read from file
-Better memory management with more unique pointers
+* Read and write data from/to file
+* Better memory management with more unique pointers
+* More algorithms
