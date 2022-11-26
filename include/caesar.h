@@ -7,18 +7,17 @@
 #include <vector>
 #include <queue>
 #include "types.h"
+#include "IEncryptionStrategy.h"
 
-class Caesar // of type IEncryptionStrategy
+class Caesar : public IEncryptionStrategy
 {
 private:
     std::unordered_map<char, std::string> map_;
 
 public:
-    Caesar() = default; // TODO: Should be Num shifts as input
-    ~Caesar() = default;
 
-    std::string encode_string(const std::string& PlainText);
-    std::string decode_string(const std::string& EncryptedString);
+    std::string encode(const std::string& PlainText) override;
+    std::string decode(const std::string& EncryptedString) override;
 };
 
 #endif

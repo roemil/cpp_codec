@@ -1,5 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
+
 namespace Node{
 struct node{
         char ch;

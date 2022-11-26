@@ -5,8 +5,7 @@
 #include <queue>
 #include <bitset>
 
-
-std::map<const char, int> Utility::count_occurences(const std::string& PlainText){
+std::map<const char, int> Huffman::count_occurences(const std::string& PlainText){
     std::map<const char, int> occurences;
     for(const char& Char : PlainText){
         if(occurences.find(Char) == occurences.end()){
@@ -19,7 +18,7 @@ std::map<const char, int> Utility::count_occurences(const std::string& PlainText
     return occurences;
 }
 
-void Utility::print_huffman(Node::node* root, std::string String){
+void Huffman::print_huffman(Node::node* root, std::string String){
     if(!root) return;
 
     if(root->ch != '$'){
@@ -30,7 +29,7 @@ void Utility::print_huffman(Node::node* root, std::string String){
 }
 
 std::priority_queue<Node::node*, std::vector<Node::node*>, compare> Huffman::build_min_heap(const std::string& PlainText){
-    std::map<const char, int> occurences = Utility::count_occurences(PlainText);
+    std::map<const char, int> occurences = count_occurences(PlainText);
     std::priority_queue<Node::node*, std::vector<Node::node*>, compare> minheap;
     for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
         Node::node* Node = Node::CreateNewNode(iter->first, iter->second);
@@ -100,14 +99,14 @@ std::string Huffman::decode_string_huffman(const std::string& CompressedString){
     return result;
 
 }
-
-std::string Huffman::encode_string(const std::string& PlainText){
+// TODO: Use template for string and bits?
+std::string Huffman::encode(const std::string& PlainText){
     std::string EncodedString;
     EncodedString = encode_string_huffman(PlainText); 
     return EncodedString;
 }
 
-std::string Huffman::decode_string(const std::string& EncodedString){
+std::string Huffman::decode(const std::string& EncodedString){
     std::string DecodedString;
     DecodedString = decode_string_huffman(EncodedString);
     return DecodedString;

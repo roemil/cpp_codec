@@ -1,4 +1,4 @@
-#include "codec.h"
+#include "caesar.h"
 #include <map>
 #include <unordered_map>
 #include <iostream>
@@ -21,13 +21,13 @@ std::string decode_string_caesar3(const std::string& EncodedString){
     return DecodedString;
 }
 
-std::string Codec::encode_string(const std::string& PlainText){
+std::string Caesar::encode(const std::string& PlainText){
     std::string EncodedString;
     EncodedString = encode_string_caesar3(PlainText);
     return EncodedString;
 }
 
-std::string Codec::decode_string(const std::string& EncodedString){
+std::string Caesar::decode(const std::string& EncodedString){
     std::string DecodedString;
     DecodedString = decode_string_caesar3(EncodedString);
     return DecodedString;
