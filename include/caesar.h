@@ -2,17 +2,11 @@
 #define CAESAR_H
 
 #include <string>
-#include <unordered_map>
-#include <map>
-#include <vector>
-#include <queue>
-#include "types.h"
 #include "IEncryptionStrategy.h"
 
 class Caesar : public IEncryptionStrategy
 {
 private:
-    std::unordered_map<char, std::string> map_;
     int shift_;
 
 public:

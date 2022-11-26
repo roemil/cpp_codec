@@ -3,7 +3,6 @@
 #include <unordered_map>
 #include <iostream>
 #include <queue>
-#include <bitset>
 
 std::map<const char, int> Huffman::count_occurences(const std::string& PlainText){
     std::map<const char, int> occurences;
