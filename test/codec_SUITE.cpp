@@ -78,6 +78,15 @@ TEST(CodecTest, EncodingDecodingUtf8Caesar) {
     EXPECT_EQ(PlainText,  codec.decode_string(codec.encode_string(PlainText)));
 }
 
+TEST(CodecTest, EncodingDecodingCaesarShift5) {
+    auto encStrat = std::make_unique<Caesar> (Caesar(5));
+    Codec codec { std::move(encStrat) };
+
+    std::string PlainText = "this is some plain text with %&%€!@";
+
+    EXPECT_EQ(PlainText,  codec.decode_string(codec.encode_string(PlainText)));
+}
+
 int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
