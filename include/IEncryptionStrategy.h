@@ -10,9 +10,6 @@ class IEncryptionStrategy
         virtual std::string decode(const std::string& encodedText) = 0;
 
         virtual ~IEncryptionStrategy() = default;
-        /*IEncryptionStrategy(const IEncryptionStrategy& other) = default;
-        IEncryptionStrategy(IEncryptionStrategy&& other) = default;
-        IEncryptionStrategy &operator =(const IEncryptionStrategy &other) = default;*/
 };
 
 #endif
