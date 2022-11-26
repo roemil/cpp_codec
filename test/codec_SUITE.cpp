@@ -23,15 +23,16 @@ bool map_compare (Map const &lhs, Map const &rhs) {
                       rhs.begin());
 }
 
-/* TEST(CodecTest, OccurenceCount){ TODO Fix
-  std::string String {"AAbbbccd"};
-  std::map<const char, int> ExpResult {{'b', 3},
-                                       {'c', 2},
-                                       {'A', 2},
-                                       {'d', 1}};
-  std::map<const char, int> Result = Huffman::count_occurences(String);
-  EXPECT_EQ(true, map_compare(ExpResult, Result));
-} */
+TEST(CodecTest, OccurenceCount){
+    std::string String {"AAbbbccd"};
+    std::map<const char, int> ExpResult {{'b', 3},
+                                        {'c', 2},
+                                        {'A', 2},
+                                        {'d', 1}};
+    Huffman huffman;
+    std::map<const char, int> Result = huffman.count_occurences(String);
+    EXPECT_EQ(true, map_compare(ExpResult, Result));
+}
 
 TEST(CodecTest, EncodeDecodeHuffman){
     auto encStrat = std::make_unique<Huffman> ();

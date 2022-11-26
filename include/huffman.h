@@ -27,11 +27,12 @@ private:
     std::string map_char_to_code(const std::string& PlainText);
     std::string encode_string_huffman(const std::string& PlainText);
     std::string decode_string_huffman(const std::string& CompressedString);
-    std::map<const char, int> count_occurences(const std::string& PlainText);
 public:
     std::string encode(const std::string& PlainText) override;
     std::string decode(const std::string& EncryptedString) override;
 
+    // Utilities for testing
+    std::map<const char, int> count_occurences(const std::string& PlainText);
     void build_huffman_tree(const std::string& PlainText);
     void print_huffman(Node::node* root, std::string String);
 };
