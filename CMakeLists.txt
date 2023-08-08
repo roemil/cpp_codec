@@ -23,6 +23,7 @@ add_executable(
     src/huffman.cpp
     src/caesar.cpp
     src/node.cpp
+    src/HuffmanBytes.cpp
     test/codec_SUITE.cpp
 )
 target_link_libraries(

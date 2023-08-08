@@ -2,18 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <bitset>
 #include <memory>
 
-#include "types.h"
 #include "codec.h"
 #include "huffman.h"
 #include "caesar.h"
-
-TEST(CodecTest, BitSetTest){
-    std::bitset<5> BitSet {"1010"};
-    EXPECT_EQ(0xA, BitSet);
-}
+#include "HuffmanBytes.h"
 
 template <typename Map>
 bool map_compare (Map const &lhs, Map const &rhs) {
@@ -86,6 +80,48 @@ TEST(CodecTest, EncodingDecodingCaesarShift5) {
     std::string PlainText = "this is some plain text with %&%€!@";
 
     EXPECT_EQ(PlainText,  codec.decode_string(codec.encode_string(PlainText)));
+}
+
+TEST(CodecTest, EncodeDecodeHuffmanBytes){
+    HuffmanBytes hb;
+    std::string plainText {"Some Text to be encoded"};
+    std::vector<std::byte> textInBytes{};
+    textInBytes.reserve(plainText.size());
+    for(const auto ch : plainText)
+    {
+        textInBytes.push_back(static_cast<std::byte>(ch));
+    }
+    auto decodedBytes = hb.decode(hb.encode(textInBytes));
+    EXPECT_EQ(plainText.size(), decodedBytes.size());
+
+    std::string result{};
+    result.reserve(decodedBytes.size());
+    for(const auto& b : decodedBytes)
+    {
+        result.push_back(static_cast<char>(b));
+    }
+    EXPECT_EQ(plainText, result);
+}
+
+TEST(CodecTest, EncodeDecodeHuffmanBytesUtf8){
+    HuffmanBytes hb;
+    std::string plainText {"this is some plain text with %&%€!@"};
+    std::vector<std::byte> textInBytes{};
+    textInBytes.reserve(plainText.size());
+    for(const auto ch : plainText)
+    {
+        textInBytes.push_back(static_cast<std::byte>(ch));
+    }
+    auto decodedBytes = hb.decode(hb.encode(textInBytes));
+    EXPECT_EQ(plainText.size(), decodedBytes.size());
+
+    std::string result{};
+    result.reserve(decodedBytes.size());
+    for(const auto& b : decodedBytes)
+    {
+        result.push_back(static_cast<char>(b));
+    }
+    EXPECT_EQ(plainText, result);
 }
 
 int main(int argc, char **argv) {
