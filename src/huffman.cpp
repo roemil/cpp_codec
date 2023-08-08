@@ -53,7 +53,7 @@ void Huffman::build_huffman_tree(const std::string& PlainText){
     huffman_tree_ = minheap.top();
 }
 
-void Huffman::build_huffman_codes(Node::node* root, std::string String){
+void Huffman::build_huffman_codes(Node::node* root, const std::string& String){
     if(!root) return;
 
     if(root->ch != '$'){
@@ -63,9 +63,10 @@ void Huffman::build_huffman_codes(Node::node* root, std::string String){
     build_huffman_codes(root->right, String + "1");
 }
 
-std::string Huffman::map_char_to_code(const std::string& PlainText){
+std::string Huffman::map_char_to_code(const std::string& plainText){
     std::string result;
-    for(const char& ch: PlainText){
+    result.reserve(plainText.size());
+    for(const char& ch: plainText){
         auto code = map_.find(ch);
         result += code->second;
     }
@@ -77,8 +78,7 @@ std::string Huffman::encode_string_huffman(const std::string& PlainText){
     build_huffman_tree(PlainText);
     build_huffman_codes(huffman_tree_, "");
 
-    std::string result = map_char_to_code(PlainText);
-    return result;
+    return map_char_to_code(PlainText);
 }
 
 std::string Huffman::decode_string_huffman(const std::string& CompressedString){
@@ -100,13 +100,9 @@ std::string Huffman::decode_string_huffman(const std::string& CompressedString){
 }
 // TODO: Use template for string and bits?
 std::string Huffman::encode(const std::string& PlainText){
-    std::string EncodedString;
-    EncodedString = encode_string_huffman(PlainText); 
-    return EncodedString;
+    return encode_string_huffman(PlainText);
 }
 
 std::string Huffman::decode(const std::string& EncodedString){
-    std::string DecodedString;
-    DecodedString = decode_string_huffman(EncodedString);
-    return DecodedString;
+    return decode_string_huffman(EncodedString);
 }

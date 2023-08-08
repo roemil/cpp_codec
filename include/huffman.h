@@ -23,7 +23,7 @@ private:
     Node::node* huffman_tree_; //todo make to unique
 
     std::priority_queue<Node::node*, std::vector<Node::node*>, compare> build_min_heap(const std::string& PlainText);
-    void build_huffman_codes(Node::node* root, std::string String);
+    void build_huffman_codes(Node::node* root, const std::string& String);
     std::string map_char_to_code(const std::string& PlainText);
     std::string encode_string_huffman(const std::string& PlainText);
     std::string decode_string_huffman(const std::string& CompressedString);
