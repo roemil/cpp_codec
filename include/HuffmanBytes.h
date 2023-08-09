@@ -18,7 +18,7 @@ struct compareNodes{
     }
 };
 
-class HuffmanBytes
+class HuffmanBytes : public IEncryptionStrategy
 {
 private:
     std::unordered_map<std::byte, ByteVector> map_;

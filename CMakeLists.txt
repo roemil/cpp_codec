@@ -19,8 +19,7 @@ include_directories(include)
 add_executable(
     codec_SUITE
     #main.cpp
-    src/codec.cpp
-    src/huffman.cpp
+    #src/huffman.cpp
     src/caesar.cpp
     src/node.cpp
     src/HuffmanBytes.cpp

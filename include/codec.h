@@ -8,14 +8,22 @@
 class Codec
 {
 private:
-    std::unique_ptr<IEncryptionStrategy> encStrat_;
+    IEncryptionStrategy& encStrat_;
 
 public:
-    Codec(std::unique_ptr<IEncryptionStrategy> encStrat) : encStrat_ {std::move(encStrat)} {};
+    Codec(IEncryptionStrategy& encStrat) : encStrat_{encStrat} {};
     ~Codec() = default;
 
-    std::string encode_string(const std::string& PlainText);
-    std::string decode_string(const std::string& EncryptedString);
+    template<typename T>
+    T encode(const T &plainText)
+    {
+        return encStrat_.encode(plainText);
+    }
+    template<typename T>
+    T decode(const T& encodedData)
+    {
+        return encStrat_.decode(encodedData);
+    }
 };
 
 #endif

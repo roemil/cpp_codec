@@ -1,17 +1,21 @@
 #include "caesar.h"
 
-std::string Caesar::encode(const std::string& PlainText){
-    std::string EncodedString;
-    for(int i = 0; i < PlainText.size(); ++i){
-        EncodedString.push_back(PlainText[i] + shift_);
+ByteVector Caesar::encode(const ByteVector& plainText){
+    ByteVector encodedBytes;
+    encodedBytes.reserve(plainText.size()/2);
+    for(const auto& byte : plainText)
+    {
+        encodedBytes.push_back(static_cast<std::byte>(static_cast<char>(byte) + shift_));
     }
-    return EncodedString;
+    return encodedBytes;
 }
 
-std::string Caesar::decode(const std::string& EncodedString){
-    std::string DecodedString;
-    for(int i = 0; i < EncodedString.size(); i++){
-        DecodedString.push_back(EncodedString[i] - shift_);
+ByteVector Caesar::decode(const ByteVector& encodedBytes){
+    ByteVector decodedBytes;
+    decodedBytes.reserve(encodedBytes.size());
+    for(const auto& byte : encodedBytes)
+    {
+        decodedBytes.push_back(static_cast<std::byte>(static_cast<char>(byte) - shift_));
     }
-    return DecodedString;
+    return decodedBytes;
 }

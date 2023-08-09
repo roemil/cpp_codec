@@ -1,9 +1,11 @@
 #ifndef CAESAR_H
 #define CAESAR_H
 
-#include <string>
+#include <vector>
+#include <cstddef>
 #include "IEncryptionStrategy.h"
 
+using ByteVector = std::vector<std::byte>;
 class Caesar : public IEncryptionStrategy
 {
 private:
@@ -11,8 +13,8 @@ private:
 
 public:
     Caesar(int shift = 3) : shift_ {shift} {};
-    std::string encode(const std::string& PlainText) override;
-    std::string decode(const std::string& EncryptedString) override;
+    ByteVector encode(const ByteVector& PlainText);
+    ByteVector decode(const ByteVector& EncryptedString);
 };
 
 #endif
