@@ -28,8 +28,6 @@ private:
     std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> build_min_heap(const ByteVector& PlainText);
     void build_huffman_codes(Node::node* root, ByteVector String);
     ByteVector mapCharToCode(const ByteVector& PlainText);
-    ByteVector encode_string_huffman(const ByteVector& PlainText);
-    ByteVector decode_string_huffman(const ByteVector& CompressedString);
 public:
     ByteVector encode(const ByteVector& PlainText);
     ByteVector decode(const ByteVector& EncryptedString);

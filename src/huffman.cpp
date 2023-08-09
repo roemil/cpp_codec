@@ -85,17 +85,18 @@ ByteVector Huffman::mapCharToCode(const ByteVector& plainText){
     return result;
 }
 
-ByteVector Huffman::encode_string_huffman(const ByteVector& PlainText){
+// TODO: Use template for string and bits?
+ByteVector Huffman::encode(const ByteVector& PlainText){
     build_huffman_tree(PlainText);
     build_huffman_codes(huffman_tree_, {});
 
     return mapCharToCode(PlainText);
 }
 
-ByteVector Huffman::decode_string_huffman(const ByteVector& CompressedString){
+ByteVector Huffman::decode(const ByteVector& EncodedString){
     Node::node* Head = huffman_tree_;
     ByteVector result;
-    for(const auto& ch : CompressedString){
+    for(const auto& ch : EncodedString){
         if(static_cast<char>(ch) == '0'){
             Head = Head->left;
         }else{
@@ -107,13 +108,4 @@ ByteVector Huffman::decode_string_huffman(const ByteVector& CompressedString){
         }
     }
     return result;
-
-}
-// TODO: Use template for string and bits?
-ByteVector Huffman::encode(const ByteVector& PlainText){
-    return encode_string_huffman(PlainText);
-}
-
-ByteVector Huffman::decode(const ByteVector& EncodedString){
-    return decode_string_huffman(EncodedString);
 }
