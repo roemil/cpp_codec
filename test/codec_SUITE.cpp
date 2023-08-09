@@ -5,9 +5,8 @@
 #include <memory>
 
 #include "codec.h"
-#include "huffman.h"
 #include "caesar.h"
-#include "HuffmanBytes.h"
+#include "Huffman.h"
 
 ByteVector stringToByteVector(const std::string& str)
 {
@@ -71,16 +70,16 @@ TEST(CodecTest, EncodingDecodingCaesarShift5) {
 }
 
 TEST(CodecTest, EncodeDecodeHuffmanBytes){
-    HuffmanBytes hb;
-    Codec codec { hb };
+    Huffman huffman;
+    Codec codec { huffman };
     std::string plainText {"Some Text to be encoded"};
     const auto textInBytes = stringToByteVector(plainText);
     EXPECT_EQ(plainText, byteVectorToString(codec.decode(codec.encode(textInBytes))));
 }
 
 TEST(CodecTest, EncodeDecodeHuffmanBytesUtf8){
-    HuffmanBytes hb;
-    Codec codec { hb };
+    Huffman huffman;
+    Codec codec { huffman };
     std::string plainText {"this is some plain text with %&%€!@"};
     const auto textInBytes = stringToByteVector(plainText);
     EXPECT_EQ(plainText, byteVectorToString(codec.decode(codec.encode(textInBytes))));
