@@ -34,7 +34,8 @@ TYPED_TEST(CodecTest, EncodeFromFile)
     const std::string fileName = "../data/test.txt";
     FileReader fr{};
     const auto plainText = fr.readFile(fileName);
-    EXPECT_EQ(plainText, codec.decode(codec.encodeFromFile(fileName)));
+    const auto encodedString = codec.encodeFromFile(fileName);
+    EXPECT_EQ(plainText, codec.decode(fr.readFile("../data/out.txt")));
 }
 
 int main(int argc, char **argv) {

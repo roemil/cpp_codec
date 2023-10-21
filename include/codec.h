@@ -27,7 +27,9 @@ public:
     {
         FileReader fr{};
         // TODO: Write result with header to file
-        return encStrat_.encode(fr.readFile(fileName));
+        auto encodedData = encStrat_.encode(fr.readFile(fileName));
+        fr.writeToFile(encodedData);
+        return encodedData;
     }
 
     [[nodiscard]] inline std::string decodeFromFile(const std::string& encodedData)
