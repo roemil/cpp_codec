@@ -7,6 +7,7 @@
 #include "codec.h"
 #include "caesar.h"
 #include "Huffman.h"
+#include "FileReader.h"
 
 template <typename CodecStratT>
 struct CodecTest : public testing::Test {};
@@ -25,6 +26,15 @@ TYPED_TEST(CodecTest, EncodeDecodeUtf8){
     Codec codec {TypeParam{}};
     std::string plainText {"this is some plain text with %&%€!@"};
     EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
+}
+
+TYPED_TEST(CodecTest, EncodeFromFile)
+{
+    Codec codec {TypeParam{}};
+    const std::string fileName = "../data/test.txt";
+    FileReader fr{};
+    const auto plainText = fr.readFile(fileName);
+    EXPECT_EQ(plainText, codec.decode(codec.encodeFromFile(fileName)));
 }
 
 int main(int argc, char **argv) {
