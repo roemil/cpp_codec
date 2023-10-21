@@ -8,51 +8,21 @@
 #include "caesar.h"
 #include "Huffman.h"
 
-TEST(CodecTest, BasicEncodingCaesar3) {
-    auto encStrat = Caesar ();
-    Codec codec { encStrat };
-    std::string plainText = "abc";
+template <typename CodecStratT>
+struct CodecTest : public testing::Test {};
 
-    EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
-}
+using CodecStrats = ::testing::Types<Caesar, Huffman>;
+TYPED_TEST_SUITE(CodecTest, CodecStrats);
 
-TEST(CodecTest, EncodingDecodingCaesar) {
-    auto encStrat = Caesar ();
-    Codec codec { encStrat};
-
-    std::string plainText = "this is some plain text";
-
-    EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
-}
-
-TEST(CodecTest, EncodingDecodingUtf8Caesar) {
-    auto encStrat = Caesar{};
-    Codec codec { encStrat };
-
-    std::string plainText = "this is some plain text with %&%€!@";
-
-    EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
-}
-
-TEST(CodecTest, EncodingDecodingCaesarShift5) {
-    auto encStrat = Caesar(5);
-    Codec codec { encStrat };
-
-    std::string plainText = "this is some plain text with %&%€!@";
-
-    EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
-}
-
-TEST(CodecTest, EncodeDecodeHuffmanBytes){
-    Huffman huffman;
-    Codec codec { huffman };
+TYPED_TEST(CodecTest, EncodeDecodeSimple){
+    Codec codec {TypeParam{}};
     std::string plainText {"Some Text to be encoded"};
-    EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
+    const auto encoded = codec.encode(plainText);
+    EXPECT_EQ(plainText, codec.decode(encoded));
 }
 
-TEST(CodecTest, EncodeDecodeHuffmanBytesUtf8){
-    Huffman huffman;
-    Codec codec { huffman };
+TYPED_TEST(CodecTest, EncodeDecodeUtf8){
+    Codec codec {TypeParam{}};
     std::string plainText {"this is some plain text with %&%€!@"};
     EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
 }

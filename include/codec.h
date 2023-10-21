@@ -11,7 +11,7 @@ private:
     IEncryptionStrategy& encStrat_;
 
 public:
-    Codec(IEncryptionStrategy& encStrat) : encStrat_{encStrat} {};
+    Codec(IEncryptionStrategy&& encStrat) : encStrat_{encStrat} {};
     ~Codec() = default;
 
     template<typename T>
