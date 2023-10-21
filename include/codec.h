@@ -13,11 +13,11 @@ public:
     Codec(EncryptionStrategyT&& encStrat) : encStrat_{encStrat} {};
     ~Codec() = default;
 
-    std::string encode(const std::string &plainText)
+    [[nodiscard]] inline std::string encode(const std::string &plainText)
     {
         return encStrat_.encode(plainText);
     }
-    std::string decode(const std::string& encodedData)
+    [[nodiscard]] inline std::string decode(const std::string& encodedData)
     {
         return encStrat_.decode(encodedData);
     }
