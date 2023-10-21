@@ -2,25 +2,22 @@
 #define CODEC_H
 
 #include <string>
-#include <memory>
-#include "IEncryptionStrategy.h"
 
+template<typename EncryptionStrategyT>
 class Codec
 {
 private:
-    IEncryptionStrategy& encStrat_;
+    EncryptionStrategyT& encStrat_;
 
 public:
-    Codec(IEncryptionStrategy&& encStrat) : encStrat_{encStrat} {};
+    Codec(EncryptionStrategyT&& encStrat) : encStrat_{encStrat} {};
     ~Codec() = default;
 
-    template<typename T>
-    T encode(const T &plainText)
+    std::string encode(const std::string &plainText)
     {
         return encStrat_.encode(plainText);
     }
-    template<typename T>
-    T decode(const T& encodedData)
+    std::string decode(const std::string& encodedData)
     {
         return encStrat_.decode(encodedData);
     }

@@ -28,8 +28,8 @@ private:
     void build_huffman_codes(Node::node* root, std::string String);
     std::string mapCharToCode(const std::string& PlainText);
 public:
-    std::string encode(const std::string& PlainText);
-    std::string decode(const std::string& EncryptedString);
+    std::string encode(const std::string& PlainText) override;
+    std::string decode(const std::string& EncryptedString) override;
 
     // Utilities for testing
     std::map<char, int> count_occurences(const std::string& PlainText);
