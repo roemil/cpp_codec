@@ -5,7 +5,6 @@
 #include <cstddef>
 #include "IEncryptionStrategy.h"
 
-using ByteVector = std::vector<std::byte>;
 class Caesar : public IEncryptionStrategy
 {
 private:
@@ -13,8 +12,8 @@ private:
 
 public:
     Caesar(int shift = 3) : shift_ {shift} {};
-    ByteVector encode(const ByteVector& PlainText);
-    ByteVector decode(const ByteVector& EncryptedString);
+    std::string encode(const std::string& PlainText);
+    std::string decode(const std::string& EncryptedString);
 };
 
 #endif

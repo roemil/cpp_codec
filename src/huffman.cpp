@@ -3,16 +3,17 @@
 #include <unordered_map>
 #include <iostream>
 #include <queue>
+#include <string>
 
-std::map<std::byte, int> Huffman::count_occurences(const ByteVector& plainText){
-    std::map<std::byte, int> occurences;
+std::map<char, int> Huffman::count_occurences(const std::string& plainText){
+    std::map<char, int> occurences;
     for(const auto& byte : plainText){
         occurences[byte] += 1;
     }
     return occurences;
 }
 
-void Huffman::print_huffman(Node::node* root, ByteVector String){
+void Huffman::print_huffman(Node::node* root, std::string String){
     if(!root) return;
 
     if(root->ch != '$'){
@@ -25,14 +26,14 @@ void Huffman::print_huffman(Node::node* root, ByteVector String){
     }
     auto left = String;
     auto right = String;
-    left.push_back(static_cast<std::byte>('0'));
-    right.push_back(static_cast<std::byte>('1'));
+    left.push_back('0');
+    right.push_back('1');
     print_huffman(root->left, left);
     print_huffman(root->right, right);
 }
 
-std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> Huffman::build_min_heap(const ByteVector& PlainText){
-    std::map<std::byte, int> occurences = count_occurences(PlainText);
+std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> Huffman::build_min_heap(const std::string& PlainText){
+    const auto occurences = count_occurences(PlainText);
     std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> minheap;
     for(auto iter = occurences.begin(); iter != occurences.end(); ++iter){
         Node::node* Node = Node::CreateNewNode(static_cast<char>(iter->first), iter->second);
@@ -42,7 +43,7 @@ std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> Huffman
     return minheap;
 }
 
-void Huffman::build_huffman_tree(const ByteVector& PlainText){
+void Huffman::build_huffman_tree(const std::string& PlainText){
     auto minheap = build_min_heap(PlainText);
     while(minheap.size() != 1){
         Node::node* Left = minheap.top();
@@ -57,22 +58,22 @@ void Huffman::build_huffman_tree(const ByteVector& PlainText){
     huffman_tree_ = minheap.top();
 }
 
-void Huffman::build_huffman_codes(Node::node* root, ByteVector String){
+void Huffman::build_huffman_codes(Node::node* root, std::string String){
     if(!root) return;
 
     if(root->ch != '$'){
-        map_.insert({static_cast<std::byte>(root->ch), String});
+        map_.insert({root->ch, String});
     }
     auto left = String;
     auto right = String;
-    left.push_back(static_cast<std::byte>('0'));
-    right.push_back(static_cast<std::byte>('1'));
+    left.push_back('0');
+    right.push_back('1');
     build_huffman_codes(root->left, left);
     build_huffman_codes(root->right, right);
 }
 
-ByteVector Huffman::mapCharToCode(const ByteVector& plainText){
-    ByteVector result;
+std::string Huffman::mapCharToCode(const std::string& plainText){
+    std::string result;
     result.reserve(plainText.size());
     for(const auto& byte: plainText){
         auto code = map_.find(byte);
@@ -86,24 +87,24 @@ ByteVector Huffman::mapCharToCode(const ByteVector& plainText){
 }
 
 // TODO: Use template for string and bits?
-ByteVector Huffman::encode(const ByteVector& PlainText){
+std::string Huffman::encode(const std::string& PlainText){
     build_huffman_tree(PlainText);
     build_huffman_codes(huffman_tree_, {});
 
     return mapCharToCode(PlainText);
 }
 
-ByteVector Huffman::decode(const ByteVector& EncodedString){
+std::string Huffman::decode(const std::string& EncodedString){
     Node::node* Head = huffman_tree_;
-    ByteVector result;
+    std::string result;
     for(const auto& ch : EncodedString){
-        if(static_cast<char>(ch) == '0'){
+        if(ch == '0'){
             Head = Head->left;
         }else{
             Head = Head->right;
         }
         if(Head->left == nullptr && Head->right == nullptr){
-            result.push_back(static_cast<std::byte>(Head->ch));
+            result.push_back(Head->ch);
             Head = huffman_tree_;
         }
     }

@@ -10,7 +10,6 @@
 #include "node.h"
 #include "IEncryptionStrategy.h"
 
-using ByteVector = std::vector<std::byte>;
 
 struct compareNodes{
     bool operator() (Node::node* l, Node::node*r){
@@ -21,21 +20,21 @@ struct compareNodes{
 class Huffman : public IEncryptionStrategy
 {
 private:
-    std::unordered_map<std::byte, ByteVector> map_;
+    std::unordered_map<char, std::string> map_;
     std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> min_heap_;
     Node::node* huffman_tree_; //todo make to unique
 
-    std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> build_min_heap(const ByteVector& PlainText);
-    void build_huffman_codes(Node::node* root, ByteVector String);
-    ByteVector mapCharToCode(const ByteVector& PlainText);
+    std::priority_queue<Node::node*, std::vector<Node::node*>, compareNodes> build_min_heap(const std::string& PlainText);
+    void build_huffman_codes(Node::node* root, std::string String);
+    std::string mapCharToCode(const std::string& PlainText);
 public:
-    ByteVector encode(const ByteVector& PlainText);
-    ByteVector decode(const ByteVector& EncryptedString);
+    std::string encode(const std::string& PlainText);
+    std::string decode(const std::string& EncryptedString);
 
     // Utilities for testing
-    std::map<std::byte, int> count_occurences(const ByteVector& PlainText);
-    void build_huffman_tree(const ByteVector& PlainText);
-    void print_huffman(Node::node* root, ByteVector String);
+    std::map<char, int> count_occurences(const std::string& PlainText);
+    void build_huffman_tree(const std::string& PlainText);
+    void print_huffman(Node::node* root, std::string String);
 };
 
 #endif
