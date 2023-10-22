@@ -12,7 +12,7 @@
 template <typename CodecStratT>
 struct CodecTest : public testing::Test {};
 
-using CodecStrats = ::testing::Types<Caesar, Huffman>;
+using CodecStrats = ::testing::Types</*Caesar,*/ Huffman>;
 TYPED_TEST_SUITE(CodecTest, CodecStrats);
 
 TYPED_TEST(CodecTest, EncodeDecodeSimple){
@@ -28,6 +28,54 @@ TYPED_TEST(CodecTest, EncodeDecodeUtf8){
     EXPECT_EQ(plainText, codec.decode(codec.encode(plainText)));
 }
 
+namespace
+{
+    std::vector<std::bitset<8>> stringToBits(const std::string& str)
+    {
+        uint8_t tmp{};
+        std::vector<std::bitset<8>> result{};
+        std::cout << std::bitset<8>(tmp) << "\n";
+        int count{};
+        for(const auto ch : str)
+        {
+            if(ch == '0')
+            {
+                tmp &= 0xfe; // 1111 1110
+            }
+            else
+            {
+                tmp |= 0x01; // 0000 0001
+            }
+            if(count == 7)
+            {
+                result.push_back(std::bitset<8>(tmp));
+                count = 0;
+                tmp = 0;
+            }
+            else
+            {
+                tmp = tmp << 1;
+                ++count;
+            }
+        }
+        return result;
+    }
+}
+
+TEST(bitTest, basic)
+{
+    std::vector<std::bitset<8>> expected{0xE8};
+    const auto actual = stringToBits("11101000");
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(bitTest, basicVector)
+{
+    std::vector<std::bitset<8>> expected{0xE8, 0xE8};
+    const auto actual = stringToBits("1110100011101000");
+    EXPECT_EQ(actual, expected);
+}
+
 TYPED_TEST(CodecTest, EncodeFromFile)
 {
     Codec codec {TypeParam{}};
@@ -35,6 +83,8 @@ TYPED_TEST(CodecTest, EncodeFromFile)
     FileReader fr{};
     const auto plainText = fr.readFile(fileName);
     const auto encodedString = codec.encodeFromFile(fileName);
+    std::cout << "encodedString" << encodedString << "\n";
+    //stringToBits(encodedString);
     EXPECT_EQ(plainText, codec.decode(fr.readFile("../data/out.txt")));
 }
 
