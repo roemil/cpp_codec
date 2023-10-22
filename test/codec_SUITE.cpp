@@ -34,7 +34,6 @@ namespace
     {
         uint8_t tmp{};
         std::vector<std::bitset<8>> result{};
-        std::cout << std::bitset<8>(tmp) << "\n";
         int count{};
         for(const auto ch : str)
         {
