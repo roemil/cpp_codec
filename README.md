@@ -5,6 +5,7 @@ Currently only two algorithms are supported:
 2. Huffmann
 
 Future work:
-* Read and write data from/to file
+* Write a header to file for huffman encoding
+* Move read/write logic. (Possibly to each encoding strategy?)
 * Better memory management with more unique pointers
 * More algorithms
